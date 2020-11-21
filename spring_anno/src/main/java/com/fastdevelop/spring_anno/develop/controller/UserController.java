@@ -1,0 +1,7 @@
+package com.fastdevelop.spring_anno.develop.controller;
+
+import org.springframework.stereotype.Controller;
+
+@Controller
+public class UserController {
+}
