@@ -12,6 +12,7 @@
         <module>spring_anno</module>
         <module>rabbit_mq_provider</module>
         <module>rabbit_mq_consumer</module>
+<!--        <module>springboot_mybatis_plus</module>-->
     </modules>
 
     <packaging>pom</packaging>
