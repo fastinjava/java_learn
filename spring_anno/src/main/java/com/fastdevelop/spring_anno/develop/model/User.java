@@ -35,4 +35,14 @@ public class User {
     public void setAge(Integer age) {
         this.age = age;
     }
+
+
+    public void initMethod(){
+        System.out.println("user initMethod");
+    }
+
+    public void destroyMethod(){
+        System.out.println("user destroyMethod");
+    }
+
 }

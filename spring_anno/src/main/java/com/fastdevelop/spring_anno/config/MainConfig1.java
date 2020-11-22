@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller;
         @ComponentScan(
                 basePackages = {"com.fastdevelop.spring_anno.develop"},
                 includeFilters = {
-                        @ComponentScan.Filter(type= FilterType.ANNOTATION,classes = Controller.class),
+                        @ComponentScan.Filter(type= FilterType.ANNOTATION,classes = {Controller.class}),
 //                        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE,classes = {UserService.class}),
 //                        @ComponentScan.Filter(type = FilterType.CUSTOM,classes = {MyCustomTypeFilter.class})
                 },
@@ -31,7 +31,8 @@ import org.springframework.stereotype.Controller;
         IncludeConfig1.class,
         MyImportSelector.class,
         MyImportBeanDefinitionRegistrar.class,
-        UserService.class
+        UserService.class,
+        MyFactoryBean.class
 })
 public class MainConfig1 {
 
@@ -57,7 +58,7 @@ public class MainConfig1 {
      */
     @Lazy(value = true)
     @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-    @Bean(value = "user1")
+    @Bean(value = "user1",initMethod = "initMethod",destroyMethod = "destroyMethod")
     public User user1(){
         System.out.println("给spring容器添加对象");
         return new User("user1",11);

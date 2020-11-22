@@ -15,18 +15,27 @@ public class Test1 {
     public void test1(){
 
 
-        ApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext(MainConfig1.class);
+        AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext(MainConfig1.class);
         String[] beanDefinitionNames = annotationConfigApplicationContext.getBeanDefinitionNames();
 //        System.out.println(annotationConfigApplicationContext.getBeanDefinitionCount());
         System.out.println(JSONUtil.toJsonPrettyStr(beanDefinitionNames));
 //        System.out.println(JSONUtil.toJsonPrettyStr(annotationConfigApplicationContext.getBeanNamesForType(User.class)));
 //
-//        User user1 = annotationConfigApplicationContext.getBean("user1", User.class);
+        User user1 = annotationConfigApplicationContext.getBean("user1", User.class);
 //        User user2 = annotationConfigApplicationContext.getBean("user1", User.class);
 //        System.out.println(ObjectUtil.equal(user1,user2));
 
         Role role_from_myImportBeanDefinitionRegistrar = annotationConfigApplicationContext.getBean("role_from_MyImportBeanDefinitionRegistrar", Role.class);
         System.out.println(JSONUtil.toJsonPrettyStr(role_from_myImportBeanDefinitionRegistrar));
+
+
+        Object bean = annotationConfigApplicationContext.getBean("com.fastdevelop.spring_anno.config.support.MyFactoryBean");
+        if (bean instanceof Role){
+            System.out.println("bean instanceof Role is true");
+        }
+        System.out.println(JSONUtil.toJsonPrettyStr(bean));
+
+        annotationConfigApplicationContext.close();
 
     }
 
