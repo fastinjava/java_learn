@@ -30,3 +30,11 @@ CREATE TABLE `t_seckill_order` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2408 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='订单表'
 
 ```
+
+```sql
+CREATE TABLE `t_seckill_user` (
+  `id` varchar(200) NOT NULL COMMENT '主键id',
+  `name` varbinary(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+```

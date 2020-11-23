@@ -41,12 +41,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
-/**
- * 分页拦截器
- *
- * @author 李鹏军
- * @since 2016-01-23
- */
+
 @Setter
 @Accessors(chain = true)
 @Intercepts({@Signature(type = StatementHandler.class, method = "prepare", args = {Connection.class, Integer.class})})

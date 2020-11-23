@@ -71,7 +71,7 @@ public class MPGenerator {
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
         strategy.setEntityLombokModel(true);
         strategy.setRestControllerStyle(true);
-        strategy.setInclude(("t_seckill_goods,t_seckill_order")
+        strategy.setInclude(("t_seckill_goods,t_seckill_order,t_seckill_user")
                 .split(","));
         strategy.setTablePrefix(pc.getModuleName() + "_");
 //        strategy.setChainModel(true);
