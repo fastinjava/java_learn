@@ -6,7 +6,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>spring_anno</artifactId>
-
+    <groupId>com.fastdevelop.spring_anno</groupId>
+    <version>1.0.0</version>
     <dependencies>
         <dependency>
             <groupId>org.springframework</groupId>
