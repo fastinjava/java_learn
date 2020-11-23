@@ -37,6 +37,29 @@ public @interface Bean {
 @Bean(value = "userName")
 ```
 
+#### 使用@Bean指定初始化和销毁方法
+
+```
+@Bean(value = "user1",initMethod = "initMethod",destroyMethod = "destroyMethod")
+```
+
+#### 使用InitializingBean, DisposableBean指定初始化和销毁方法
+
+```
+@Controller
+public class UserController implements InitializingBean, DisposableBean {
+    public void destroy() throws Exception {
+        System.out.println("UserController destroy");
+    }
+
+    public void afterPropertiesSet() throws Exception {
+        System.out.println("UserController afterPropertiesSet");
+    }
+}
+```
+
+
+
 ### @ComponentScan
 
 
@@ -414,3 +437,323 @@ public class MyImportBeanDefinitionRegistrar implements ImportBeanDefinitionRegi
     }
 }
 ```
+
+### @PostConstruct方法
+
+
+
+初始化之后调用
+
+### @PreDestroy方法
+
+销毁之前调用
+
+
+
+关于这几个方法的调用先后顺序
+
+`这里以注解扫描到Controller注解，向容器中注入组件的方式` ,而不是@Bean方式；(后续研究)
+
+
+
+```
+@Controller
+public class UserController implements InitializingBean, DisposableBean {
+
+    public UserController(){
+        System.out.println("userController 的无参构造方法");
+    }
+
+    @PostConstruct
+    public void  postConstruct(){
+        System.out.println("userController 的postConstruct方法");
+    }
+
+    @PreDestroy
+    public void  preDestroy(){
+        System.out.println("userController preDestroy 方法");
+    }
+
+    public void destroy() throws Exception {
+        System.out.println("UserController destroy");
+    }
+
+    public void afterPropertiesSet() throws Exception {
+        System.out.println("UserController afterPropertiesSet");
+    }
+}
+```
+
+userController 的无参构造方法
+userController 的postConstruct方法  @PostConstruct
+UserController afterPropertiesSet
+
+userController preDestroy 方法 @PreDestroy
+UserController destroy
+
+
+
+如果以@Bean的方式注入组件时，指定initMethod，destroyMethod方法，这个时候顺序又是怎么样的?
+
+```
+public class MainConfig2 {
+
+    @Bean(initMethod = "initMethod",destroyMethod = "destroyMethod")
+    public UserController userController(){
+        return new UserController();
+    }
+
+}
+```
+
+```
+package com.fastdevelop.spring_anno.develop.controller;
+
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.stereotype.Controller;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
+@Controller
+public class UserController implements InitializingBean, DisposableBean {
+
+    public UserController(){
+        System.out.println("userController 的无参构造方法");
+    }
+
+    public void initMethod(){
+        System.out.println("userController initMethod");
+    }
+
+    public void destroyMethod(){
+        System.out.println("userController destroyMethod");
+    }
+
+    @PostConstruct
+    public void  postConstruct(){
+        System.out.println("userController 的postConstruct方法");
+    }
+
+    @PreDestroy
+    public void  preDestroy(){
+        System.out.println("userController preDestroy 方法");
+    }
+
+    public void destroy() throws Exception {
+        System.out.println("UserController destroy");
+    }
+
+    public void afterPropertiesSet() throws Exception {
+        System.out.println("UserController afterPropertiesSet");
+    }
+}
+```
+
+
+
+此时顺序：
+
+```
+userController 的无参构造方法
+userController 的postConstruct方法
+UserController afterPropertiesSet
+userController initMethod
+
+userController preDestroy 方法
+UserController destroy
+userController destroyMethod
+
+```
+
+### @Value
+
+### @PropertySource
+
+```
+/**
+ * @Value 注解
+ */
+@PropertySource(value = {"classpath:/app.properties"})
+public class Connection {
+    //注入普通字符串
+    @Value("localhost")
+    private String ip;
+    //注入系统属性
+    @Value("#{systemProperties['os.name']}")
+    private String osName;
+
+
+    //配置文件读取
+    @Value("${server.port}")
+    private String port;
+    private String username;
+
+    //注入表达式结果
+    @Value("#{ 22 * 2 }")
+    private String passwd;
+
+
+
+    public String getOsName() {
+        return osName;
+    }
+
+    public void setOsName(String osName) {
+        this.osName = osName;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public String getPort() {
+        return port;
+    }
+
+    public void setPort(String port) {
+        this.port = port;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPasswd() {
+        return passwd;
+    }
+
+    public void setPasswd(String passwd) {
+        this.passwd = passwd;
+    }
+}
+```
+
+###  @Autowired
+
+###     @Resource
+
+###     @Primary
+
+###     @Qualifier
+
+
+
+
+
+
+
+## 常见类
+
+### FactoryBean
+
+```
+public interface FactoryBean<T> {
+
+T getObject() throws Exception;
+Class<?> getObjectType();
+boolean isSingleton();
+
+}
+```
+
+第一步：
+
+自定义FactoryBean，重写三个方法
+
+第二步：
+
+将自定义FactoryBean放到容器中
+
+
+
+注意：值得注意的是，虽然我们放进容器的是自定义FactoryBean，但是实际上相当于把其getObject方法返回的对象放进容器中。
+
+
+
+```
+package com.fastdevelop.spring_anno.config.support;
+
+import com.fastdevelop.spring_anno.develop.model.Role;
+import org.springframework.beans.factory.FactoryBean;
+
+public class MyFactoryBean implements FactoryBean<Role> {
+
+
+    /**
+     * 默认放进ioc容器的bean名称是：MyFactoryBean全限定名,通过全限定名拿到的实际对象是getObject方法返回的类型
+     * @return
+     * @throws Exception
+     */
+    public Role getObject() throws Exception {
+        Role role_from_myFactoryBean = new Role("role_from_MyFactoryBean");
+        return role_from_myFactoryBean;
+    }
+
+
+    /**
+     * 要注入的bean的类型
+     * @return
+     */
+    public Class<?> getObjectType() {
+        return Role.class;
+    }
+
+    /**
+     * 是否单例
+     * @return
+     */
+    public boolean isSingleton() {
+        return false;
+    }
+}
+```
+
+### BeanPostProcessor
+
+
+
+```
+//给bean赋值setter方法
+
+populateBean(beanName, mbd, instanceWrapper);
+
+
+
+//调用BeanPostProcessors的applyBeanPostProcessorsBeforeInitialization方法
+
+applyBeanPostProcessorsBeforeInitialization(wrappedBean, beanName);
+
+
+//执行自定义初始化方法
+initializeBean(beanName, exposedObject, mbd);
+
+
+
+//调用BeanPostProcessors的postProcessAfterInitialization方法
+
+beanProcessor.postProcessAfterInitialization(result, beanName);
+```
+
+BeanPostProcessor的一些实现类
+
+```
+InitDestroyAnnotationBeanPostProcessor
+```
+
+
+
+
+
+# springbean初始化流程
+
+https://www.cnblogs.com/fyx158497308/p/3977391.html
