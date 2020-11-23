@@ -1,0 +1,12 @@
+server:
+  port: 8088
+spring:
+  application:
+    name: seck_kill
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+#    virtual-host:
+
