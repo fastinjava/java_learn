@@ -3,6 +3,7 @@ package com.fastdevelop.design_patterns.web.controller;
 import com.fastdevelop.design_patterns.service.UserService;
 import com.fastdevelop.design_patterns.stragey.DispatchBus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +17,9 @@ public class DispatchController {
     @Resource
     private UserService userService;
 
+
     @Autowired
+    @Qualifier(value = "dispatchBus")
     private DispatchBus dispatchBus;
 
     @Autowired

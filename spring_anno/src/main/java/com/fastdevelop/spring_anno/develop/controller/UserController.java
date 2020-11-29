@@ -2,15 +2,19 @@ package com.fastdevelop.spring_anno.develop.controller;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.*;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.*;
+import org.springframework.context.annotation.Conditional;
+import org.springframework.core.env.Environment;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringValueResolver;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 @Controller
-public class UserController implements InitializingBean, DisposableBean, ApplicationContextAware, BeanNameAware, BeanFactoryAware {
+public class UserController implements InitializingBean, DisposableBean, ApplicationContextAware, BeanNameAware, BeanFactoryAware
+, EmbeddedValueResolverAware, EnvironmentAware , ApplicationEventPublisherAware,MessageSourceAware,ResourceLoaderAware {
 
     private ApplicationContext applicationContext;
 
@@ -55,5 +59,26 @@ public class UserController implements InitializingBean, DisposableBean, Applica
 
     public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
         System.out.println(String.format("UserController BeanFactoryAware setBeanFactory : %s",beanFactory.getClass().getSimpleName()));
+    }
+
+    public void setEmbeddedValueResolver(StringValueResolver resolver) {
+        System.out.println(String.format("UserController EmbeddedValueResolverAware setEmbeddedValueResolver : %s",resolver.resolveStringValue("${server.port}")));
+    }
+
+    public void setEnvironment(Environment environment) {
+        System.out.println(String.format("UserController EnvironmentAware setEnvironment : %s",environment.getProperty("os.name")));
+
+    }
+
+    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
+        System.out.println(String.format("UserController ApplicationEventPublisherAware setApplicationEventPublisher : %s",applicationEventPublisher));
+    }
+
+    public void setMessageSource(MessageSource messageSource) {
+        System.out.println(String.format("UserController MessageSourceAware setMessageSource : %s",messageSource));
+    }
+
+    public void setResourceLoader(ResourceLoader resourceLoader) {
+        System.out.println(String.format("UserController ResourceLoaderAware setResourceLoader : %s",resourceLoader));
     }
 }

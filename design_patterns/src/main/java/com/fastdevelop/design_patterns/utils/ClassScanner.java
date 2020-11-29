@@ -20,7 +20,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ClassScaner {
+public class ClassScanner {
     private ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
 
     private final List<TypeFilter> includeFilters = new ArrayList<TypeFilter>();
@@ -39,7 +39,7 @@ public class ClassScaner {
 
     /**
      * 添加排除的Fiter
-     * @param includeFilter
+     * @param excludeFilter
      */
     public void addExcludeFilter(TypeFilter excludeFilter) {
         this.excludeFilters.add(excludeFilter);
@@ -53,7 +53,7 @@ public class ClassScaner {
      */
     public static Set<Class<?>> scan(String basePackage,
                                      Class<?>... targetTypes) {
-        ClassScaner cs = new ClassScaner();
+        ClassScanner cs = new ClassScanner();
         for (Class<?> targetType : targetTypes){
             if(TypeUtils.isAssignable(Annotation.class, targetType)){
                 cs.addIncludeFilter(new AnnotationTypeFilter((Class<? extends Annotation>) targetType));
@@ -72,7 +72,7 @@ public class ClassScaner {
      */
     public static Set<Class<?>> scan(String[] basePackages,
                                      Class<?>... targetTypes) {
-        ClassScaner cs = new ClassScaner();
+        ClassScanner cs = new ClassScanner();
         for (Class<?> targetType : targetTypes){
             if(TypeUtils.isAssignable(Annotation.class, targetType)){
                 cs.addIncludeFilter(new AnnotationTypeFilter((Class<? extends Annotation>) targetType));

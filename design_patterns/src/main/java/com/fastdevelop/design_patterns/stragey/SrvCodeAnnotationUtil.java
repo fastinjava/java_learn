@@ -23,14 +23,15 @@ public class SrvCodeAnnotationUtil {
         dispatchHandlerMap.put("userServiceRegister", userServiceRegisterDispatchHandler);
     }
 
-    public static DispatchHandler getDispatchandler(String srvCode){
-        DispatchHandler dispatchHandler = dispatchHandlerMap.get(srvCode);
-        return dispatchHandler;
-    }
-
-//        public  DispatchHandler getDispatchandler(String srvCode){
-//            Map<String,Class> map = (Map<String, Class>) beanFactory.getBean(SrvCodeAnnotation.class.getName());
-//            return (DispatchHandler)beanFactory.getBean(map.get(srvCode));
+//    public static DispatchHandler getDispatchandler(String srvCode){
+//        DispatchHandler dispatchHandler = dispatchHandlerMap.get(srvCode);
+//        return dispatchHandler;
 //    }
+
+        public  DispatchHandler getDispatchandler(String srvCode){
+            Map<String,Class> map = (Map<String, Class>) beanFactory.getBean(SrvCodeAnnotation.class.getName());
+            DispatchHandler handler = (DispatchHandler) beanFactory.getBean(map.get(srvCode));
+            return handler;
+    }
 
 }
