@@ -7,7 +7,6 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class Test {
     @org.junit.Test
     public void test1(){
-
         AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(MainConfigAop.class);
         MathCalculator mathCalculator = ac.getBean(MathCalculator.class);
         int result = mathCalculator.div(1, 1);

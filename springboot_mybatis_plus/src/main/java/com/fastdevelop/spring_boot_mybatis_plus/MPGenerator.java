@@ -26,25 +26,45 @@ public class MPGenerator {
         System.out.println(projectPath);
 
 
+//
+//        // 数据源配置
+//        DataSourceConfig dsc = new DataSourceConfig();
+//        dsc.setUrl("jdbc:mysql://localhost:3306/seckill?useSSL=false&useUnicode=true&characterEncoding=UTF8&serverTimezone=GMT");
+//        dsc.setSchemaName("public");
+//        dsc.setKeyWordsHandler(new MySqlKeyWordsHandler());
+//        dsc.setDbType(DbType.MYSQL);
+//        dsc.setDriverName("com.mysql.cj.jdbc.Driver");
+//        dsc.setUsername("root");
+//        dsc.setPassword("123456");
+//        dsc.setTypeConvert(new MysqlTypeConvert());
+//        mpg.setDataSource(dsc);
+
+
+
 
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://localhost:3306/seckill?useSSL=false&useUnicode=true&characterEncoding=UTF8&serverTimezone=GMT");
+        dsc.setUrl("jdbc:oracle:thin:@30.20.188.130:1521:orcl");
         dsc.setSchemaName("public");
         dsc.setKeyWordsHandler(new MySqlKeyWordsHandler());
         dsc.setDbType(DbType.MYSQL);
-        dsc.setDriverName("com.mysql.cj.jdbc.Driver");
-        dsc.setUsername("root");
-        dsc.setPassword("123456");
+        dsc.setDriverName("oracle.jdbc.driver.OracleDriver");
+        dsc.setUsername("sge_test");
+        dsc.setPassword("sge_test");
         dsc.setTypeConvert(new MysqlTypeConvert());
         mpg.setDataSource(dsc);
 
 
         // 包配置
         PackageConfig pc = new PackageConfig();
-        pc.setModuleName("spring_boot_mybatis_plus");
-        pc.setParent("com.fastdevelop");
+        pc.setModuleName("auth");
+        pc.setParent("com.sge.service");
         mpg.setPackageInfo(pc);
+//        // 包配置
+//        PackageConfig pc = new PackageConfig();
+//        pc.setModuleName("spring_boot_mybatis_plus");
+//        pc.setParent("com.fastdevelop");
+//        mpg.setPackageInfo(pc);
 
         // 自定义配置
         InjectionConfig cfg = new InjectionConfig() {
@@ -71,7 +91,7 @@ public class MPGenerator {
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
         strategy.setEntityLombokModel(true);
         strategy.setRestControllerStyle(true);
-        strategy.setInclude(("t_seckill_goods,t_seckill_order,t_seckill_user")
+        strategy.setInclude(("B_APP_MAPP_DET")
                 .split(","));
         strategy.setTablePrefix(pc.getModuleName() + "_");
 //        strategy.setChainModel(true);
